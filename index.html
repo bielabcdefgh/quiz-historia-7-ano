@@ -716,7 +716,7 @@
                     <div class="game-info">
                         <div class="info-item">
                             <span>Questão:</span>
-                            <span id="exam-question-count">1/15</span>
+                            <span id="exam-question-count">1/20</span>
                         </div>
                         <div class="info-item">
                             <span>Tempo:</span>
@@ -769,7 +769,7 @@
                     <div class="game-info">
                         <div class="info-item">
                             <span>Cartão:</span>
-                            <span id="flashcard-count">1/35</span>
+                            <span id="flashcard-count">1/40</span>
                         </div>
                         <div class="info-item">
                             <span>Acertos:</span>
@@ -865,11 +865,10 @@
     </div>
 
     <script>
-        // Dados do jogo - VERSÃO EXPANDIDA
+        // Dados do jogo - VERSÃO COMPLETA SEM REPETIÇÕES
         const gameData = {
-            // Questões do Capítulo 11 - EXPANDIDAS
+            // Questões do Capítulo 11 - 25 QUESTÕES ÚNICAS
             chapter11: [
-                // FÁCEIS (5)
                 {
                     type: "multiple",
                     difficulty: "easy",
@@ -935,8 +934,58 @@
                     correct: 2,
                     explanation: "O Rio de Janeiro tornou-se um importante centro de distribuição de escravizados no período colonial."
                 },
-
-                // MÉDIAS (6)
+                {
+                    type: "multiple",
+                    difficulty: "easy",
+                    question: "Como eram chamados os navios que transportavam escravizados?",
+                    options: [
+                        "Caravelas",
+                        "Tumbeiros",
+                        "Galeões",
+                        "Bergantins"
+                    ],
+                    correct: 1,
+                    explanation: "Os navios negreiros eram conhecidos como 'tumbeiros' devido às altas taxas de mortalidade durante a viagem."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "easy",
+                    question: "Qual era a principal forma de resistência dos escravizados?",
+                    options: [
+                        "Formação de quilombos",
+                        "Participação política",
+                        "Compra da liberdade",
+                        "Conversão religiosa"
+                    ],
+                    correct: 0,
+                    explanation: "A formação de quilombos foi uma das principais formas de resistência, onde escravizados fugidos criavam comunidades autônomas."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "medium",
+                    question: "Quais eram os dois principais grupos étnicos africanos escravizados no Brasil?",
+                    options: [
+                        "Yorubás e Hausás",
+                        "Sudaneses e Bantos",
+                        "Malienses e Ganeses",
+                        "Angolanos e Moçambicanos"
+                    ],
+                    correct: 1,
+                    explanation: "Os principais grupos étnicos africanos escravizados no Brasil foram os sudaneses (região da Nigéria, Benin) e os bantos (Angola, Congo, Moçambique)."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "medium",
+                    question: "O que caracterizava os navios negreiros?",
+                    options: [
+                        "Eram luxuosos e confortáveis",
+                        "Transportavam apenas mulheres e crianças",
+                        "Tinham condições sanitárias adequadas",
+                        "Eram superlotados e insalubres"
+                    ],
+                    correct: 3,
+                    explanation: "Os navios negreiros eram caracterizados pela superlotação, falta de higiene, alimentação precária e altas taxas de mortalidade durante a viagem."
+                },
                 {
                     type: "truefalse",
                     difficulty: "medium",
@@ -968,32 +1017,6 @@
                     explanation: "A 'Travessia do Médio' era a segunda etapa do comércio triangular, quando os escravizados eram transportados da África para as Américas em condições desumanas nos porões dos navios negreiros."
                 },
                 {
-                    type: "multiple",
-                    difficulty: "medium",
-                    question: "Quais eram os dois principais grupos étnicos africanos escravizados no Brasil?",
-                    options: [
-                        "Yorubás e Hausás",
-                        "Sudaneses e Bantos",
-                        "Malienses e Ganeses",
-                        "Angolanos e Moçambicanos"
-                    ],
-                    correct: 1,
-                    explanation: "Os principais grupos étnicos africanos escravizados no Brasil foram os sudaneses (região da Nigéria, Benin) e os bantos (Angola, Congo, Moçambique)."
-                },
-                {
-                    type: "multiple",
-                    difficulty: "medium",
-                    question: "O que caracterizava os navios negreiros?",
-                    options: [
-                        "Eram luxuosos e confortáveis",
-                        "Transportavam apenas mulheres e crianças",
-                        "Tinham condições sanitárias adequadas",
-                        "Eram superlotados e insalubres"
-                    ],
-                    correct: 3,
-                    explanation: "Os navios negreiros eram caracterizados pela superlotação, falta de higiene, alimentação precária e altas taxas de mortalidade durante a viagem."
-                },
-                {
                     type: "text",
                     difficulty: "medium",
                     question: "Qual era a diferença entre a escravidão indígena e a africana no Brasil colonial?",
@@ -1001,8 +1024,27 @@
                     keywords: ["indígena", "africana", "resistência", "doenças", "experiência agrícola", "substituição"],
                     explanation: "Inicialmente os portugueses escravizaram indígenas, mas gradualmente substituíram pela mão de obra africana, que era mais resistente a doenças europeias e possuía experiência com agricultura, além de ser mais lucrativa para os traficantes."
                 },
-
-                // DIFÍCEIS (4)
+                {
+                    type: "explain",
+                    difficulty: "medium",
+                    question: "Explique a importância das irmandades religiosas para os escravizados.",
+                    answer: "As irmandades religiosas permitiam que os escravizados preservassem suas culturas, organizassem ajuda mútua e em alguns casos comprassem alforrias",
+                    keywords: ["irmandades", "religiosas", "preservação cultural", "ajuda mútua", "alforria", "organização"],
+                    explanation: "As irmandades religiosas, como as de Nossa Senhora do Rosário, eram espaços onde escravizados podiam praticar suas tradições, ajudar uns aos outros e em alguns casos juntar recursos para comprar alforrias."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "medium",
+                    question: "O que eram as 'feitorias' no contexto do tráfico de escravos?",
+                    options: [
+                        "Locais de cultivo de cana-de-açúcar",
+                        "Postos de comércio na costa africana",
+                        "Mercados de escravos no Brasil",
+                        "Quilombos urbanos"
+                    ],
+                    correct: 1,
+                    explanation: "As feitorias eram postos de comércio estabelecidos pelos portugueses na costa africana, onde negociavam com líderes locais para obter escravizados."
+                },
                 {
                     type: "explain",
                     difficulty: "hard",
@@ -1040,12 +1082,61 @@
                     answer: "A resistência cultural consistia na preservação de tradições africanas como religiões, música, dança, culinária e línguas, mantendo viva a identidade cultural mesmo sob a escravidão",
                     keywords: ["preservação", "tradições", "religiões", "música", "dança", "culinária", "línguas", "identidade cultural", "africana"],
                     explanation: "A resistência cultural foi uma forma importante de oposição à escravidão, onde os africanos e seus descendentes mantiveram vivas suas tradições religiosas (como o candomblé), musicais, linguísticas e culinárias, criando uma cultura afro-brasileira rica e resistente."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "hard",
+                    question: "O que foi a 'Lei do Ventre Livre' de 1871?",
+                    options: [
+                        "Lei que proibia o tráfico de escravos",
+                        "Lei que concedia liberdade aos filhos de escravas nascidos a partir daquela data",
+                        "Lei que estabelecia a abolição imediata da escravidão",
+                        "Lei que regulamentava o trabalho escravo"
+                    ],
+                    correct: 1,
+                    explanation: "A Lei do Ventre Livre, também conhecida como Lei Rio Branco, determinava que todos os filhos de mulheres escravizadas nascidos a partir de 28 de setembro de 1871 seriam considerados livres."
+                },
+                {
+                    type: "explain",
+                    difficulty: "hard",
+                    question: "Explique o sistema de 'tronco' utilizado nos engenhos.",
+                    answer: "O tronco era um instrumento de tortura e punição onde os escravizados eram presos pelos pés e/ou mãos, muitas vezes sofrendo castigos físicos",
+                    keywords: ["tronco", "instrumento", "tortura", "punição", "castigo", "presos", "pés", "mãos"],
+                    explanation: "O tronco era um instrumento de madeira ou ferro usado para prender escravizados pelos pés, mãos ou pescoço, servindo como forma de punição e tortura para aqueles que desobedeciam ou tentavam fugir."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "hard",
+                    question: "Qual foi o principal motivo para a substituição da mão de obra indígena pela africana?",
+                    options: [
+                        "Os indígenas eram mais caros",
+                        "Os africanos aceitavam melhor a escravidão",
+                        "Os indígenas eram protegidos por leis e tinham maior resistência",
+                        "Os africanos tinham mais experiência com agricultura tropical"
+                    ],
+                    correct: 3,
+                    explanation: "Os africanos possuíam experiência com agricultura em climas tropicais, eram mais resistentes a doenças europeias e não tinham a mesma proteção legal que os indígenas."
+                },
+                {
+                    type: "text",
+                    difficulty: "hard",
+                    question: "Descreva o papel dos 'feitores' no sistema escravista.",
+                    answer: "Os feitores eram encarregados de supervisionar o trabalho dos escravizados, aplicando castigos e garantindo a produtividade, atuando como intermediários entre senhores e escravizados",
+                    keywords: ["feitores", "supervisionar", "trabalho", "castigos", "produtividade", "intermediários", "senhores", "escravizados"],
+                    explanation: "Os feitores eram homens brancos ou mestiços contratados pelos senhores para supervisionar o trabalho escravo. Eram responsáveis por garantir a produtividade e aplicar castigos físicos, tornando-se símbolos da violência do sistema escravista."
+                },
+                {
+                    type: "explain",
+                    difficulty: "hard",
+                    question: "Explique o que eram as 'calundus' e sua importância para a resistência cultural.",
+                    answer: "Calundus eram cerimônias religiosas africanas que misturavam elementos de diferentes tradições, servindo como espaços de preservação cultural e resistência espiritual",
+                    keywords: ["calundus", "cerimônias", "religiosas", "africanas", "preservação cultural", "resistência espiritual", "tradições"],
+                    explanation: "Os calundus eram rituais religiosos que reuniam elementos de diferentes tradições africanas, permitindo a preservação de práticas espirituais e servindo como espaços de sociabilidade e resistência cultural contra a imposição do catolicismo."
                 }
             ],
             
-            // Questões do Capítulo 12 - EXPANDIDAS
+            // Questões do Capítulo 12 - 25 QUESTÕES ÚNICAS
             chapter12: [
-                // FÁCEIS (5)
                 {
                     type: "multiple",
                     difficulty: "easy",
@@ -1111,8 +1202,58 @@
                     correct: 2,
                     explanation: "Os senhores de engenho eram os proprietários das terras e instalações, detinham grande poder político e econômico na colônia."
                 },
-
-                // MÉDIAS (6)
+                {
+                    type: "multiple",
+                    difficulty: "easy",
+                    question: "Qual era o solo ideal para o cultivo da cana-de-açúcar?",
+                    options: [
+                        "Solo arenoso",
+                        "Massapê",
+                        "Solo argiloso",
+                        "Terra roxa"
+                    ],
+                    correct: 1,
+                    explanation: "O massapê, solo escuro e fértil encontrado no litoral nordestino, era ideal para o cultivo da cana-de-açúcar."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "easy",
+                    question: "O que era a 'casa de purgar' no engenho?",
+                    options: [
+                        "Local onde se purificava a água",
+                        "Onde o açúcar era branqueado e secado",
+                        "Moradia dos feitores",
+                        "Local de castigo dos escravizados"
+                    ],
+                    correct: 1,
+                    explanation: "A casa de purgar era onde o açúcar mascavo era purificado e secado, tornando-se açúcar branco de melhor qualidade."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "medium",
+                    question: "Qual era o 'Pacto Colonial' na economia açucareira?",
+                    options: [
+                        "Acordo entre senhores de engenho e escravizados",
+                        "Sistema onde o Brasil só podia comerciar com Portugal",
+                        "Aliança entre Brasil e Holanda para produção de açúcar",
+                        "Tratado que proibia a escravidão indígena"
+                    ],
+                    correct: 1,
+                    explanation: "O Pacto Colonial estabelecia que o Brasil (colônia) só podia comercializar com Portugal (metrópole), que comprava produtos baratos e vendia manufaturados caros."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "medium",
+                    question: "Quem eram os 'lavradores de cana' na sociedade colonial?",
+                    options: [
+                        "Escravizados que plantavam cana",
+                        "Proprietários de terras que plantavam cana para os engenhos",
+                        "Comerciantes de açúcar",
+                        "Funcionários que supervisionavam o plantio"
+                    ],
+                    correct: 1,
+                    explanation: "Os lavradores de cana eram proprietários de terras menores que plantavam cana e a levavam para ser processada nos engenhos dos senhores mais ricos."
+                },
                 {
                     type: "truefalse",
                     difficulty: "medium",
@@ -1144,32 +1285,6 @@
                     explanation: "A casa-grande era a residência luxuosa do senhor; a senzala era a moradia precária dos escravizados; a moenda era onde a cana era esmagada para extrair o caldo que seria transformado em açúcar."
                 },
                 {
-                    type: "multiple",
-                    difficulty: "medium",
-                    question: "Qual era o 'Pacto Colonial' na economia açucareira?",
-                    options: [
-                        "Acordo entre senhores de engenho e escravizados",
-                        "Sistema onde o Brasil só podia comerciar com Portugal",
-                        "Aliança entre Brasil e Holanda para produção de açúcar",
-                        "Tratado que proibia a escravidão indígena"
-                    ],
-                    correct: 1,
-                    explanation: "O Pacto Colonial estabelecia que o Brasil (colônia) só podia comercializar com Portugal (metrópole), que comprava produtos baratos e vendia manufaturados caros."
-                },
-                {
-                    type: "multiple",
-                    difficulty: "medium",
-                    question: "Quem eram os 'lavradores de cana' na sociedade colonial?",
-                    options: [
-                        "Escravizados que plantavam cana",
-                        "Proprietários de terras que plantavam cana para os engenhos",
-                        "Comerciantes de açúcar",
-                        "Funcionários que supervisionavam o plantio"
-                    ],
-                    correct: 1,
-                    explanation: "Os lavradores de cana eram proprietários de terras menores que plantavam cana e a levavam para ser processada nos engenhos dos senhores mais ricos."
-                },
-                {
                     type: "text",
                     difficulty: "medium",
                     question: "Como era organizada a hierarquia social na sociedade açucareira?",
@@ -1177,8 +1292,27 @@
                     keywords: ["hierarquia", "senhores de engenho", "topo", "comerciantes", "funcionários", "escravizados", "base", "livres pobres"],
                     explanation: "A sociedade era piramidal: no topo os senhores de engenho (elite), depois comerciantes, padres e militares (camada média), e na base os escravizados e homens livres pobres (maioria da população)."
                 },
-
-                // DIFÍCEIS (4)
+                {
+                    type: "explain",
+                    difficulty: "medium",
+                    question: "Explique o que era o 'aquífero' no processo de produção do açúcar.",
+                    answer: "O aquífero era o conjunto de tachos de cobre onde o caldo de cana era fervido e concentrado para se transformar em melaço",
+                    keywords: ["aquífero", "tachos", "cobre", "caldo", "fervido", "concentrado", "melaço"],
+                    explanation: "O aquífero era a bateria de tachos de cobre onde o caldo de cana passava por sucessivas fervuras, tornando-se cada vez mais concentrado até se transformar em melaço, que depois seria cristalizado em açúcar."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "medium",
+                    question: "Qual era a principal região produtora de açúcar no Brasil colonial?",
+                    options: [
+                        "Sudeste",
+                        "Nordeste",
+                        "Sul",
+                        "Centro-Oeste"
+                    ],
+                    correct: 1,
+                    explanation: "O Nordeste, especialmente a Zona da Mata de Pernambuco e Bahia, foi a principal região produtora de açúcar durante o período colonial."
+                },
                 {
                     type: "explain",
                     difficulty: "hard",
@@ -1216,6 +1350,56 @@
                     answer: "O senhor de engenho exercia poder absoluto sobre escravizados e dependentes, criando uma sociedade patriarcal e autoritária que se refletia em todas as esferas da colônia",
                     keywords: ["poder absoluto", "patriarcal", "autoritária", "senhor", "escravizados", "dependentes", "sociedade", "colônia"],
                     explanation: "Dentro do engenho, o senhor detinha poder absoluto sobre escravizados, familiares e agregados, estabelecendo relações patriarcais e autoritárias que se reproduziam em toda a sociedade colonial, influenciando a política, economia e cultura brasileiras por séculos."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "hard",
+                    question: "O que era o 'exclusivo colonial' ou 'pacto colonial'?",
+                    options: [
+                        "Acordo entre colônias para não competirem",
+                        "Monopólio comercial da metrópole sobre a colônia",
+                        "Direito dos colonos de escolher seus governantes",
+                        "Sistema de cotas para produção agrícola"
+                    ],
+                    correct: 1,
+                    explanation: "O exclusivo colonial ou pacto colonial era o sistema que garantia à metrópole o monopólio do comércio com suas colônias, comprando produtos a preços baixos e vendendo manufaturados a preços altos."
+                },
+                {
+                    type: "explain",
+                    difficulty: "hard",
+                    question: "Explique a crise do sistema açucareiro no século XVII.",
+                    answer: "A crise foi causada pela concorrência holandesa nas Antilhas, que produzia açúcar mais barato, e pela descoberta de ouro no Brasil, que desviou investimentos e mão de obra",
+                    keywords: ["crise", "concorrência", "holandesa", "Antilhas", "açúcar barato", "ouro", "investimentos", "mão de obra"],
+                    explanation: "A crise do sistema açucareiro no século XVII foi provocada pela produção holandesa nas Antilhas, que usava técnicas mais modernas e produzia açúcar mais barato, e pela descoberta de ouro em Minas Gerais, que atraiu investimentos e mão de obra para a mineração."
+                },
+                {
+                    type: "text",
+                    difficulty: "hard",
+                    question: "Descreva as funções dos 'tanoeiros' nos engenhos de açúcar.",
+                    answer: "Os tanoeiros eram artesãos especializados em fabricar e consertar as tinas e tonéis de madeira usados para armazenar e transportar o açúcar e a aguardente",
+                    keywords: ["tanoeiros", "artesãos", "fabricar", "consertar", "tinas", "tonéis", "madeira", "armazenar", "transportar", "açúcar", "aguardente"],
+                    explanation: "Os tanoeiros eram trabalhadores especializados na fabricação e manutenção dos recipientes de madeira (tonéis, tinas e pipas) usados para armazenar e transportar o açúcar, melaço e aguardente produzidos nos engenhos."
+                },
+                {
+                    type: "explain",
+                    difficulty: "hard",
+                    question: "Explique o papel dos holandeses na economia açucareira brasileira.",
+                    answer: "Os holandeses financiaram a instalação de engenhos, controlaram o refino e a comercialização do açúcar na Europa, e após serem expulsos do Brasil, montaram produção concorrente nas Antilhas",
+                    keywords: ["holandeses", "financiaram", "engenhos", "refino", "comercialização", "Europa", "expulsos", "Antilhas", "concorrente"],
+                    explanation: "Os holandeses tiveram papel crucial no financiamento da instalação de engenhos no Brasil, no refino do açúcar e na sua distribuição na Europa. Após serem expulsos em 1654, levaram know-how para as Antilhas, onde montaram produção concorrente que prejudicou a economia açucareira brasileira."
+                },
+                {
+                    type: "multiple",
+                    difficulty: "hard",
+                    question: "Qual foi o principal impacto da produção açucareira na organização do espaço geográfico brasileiro?",
+                    options: [
+                        "Povoamento do interior",
+                        "Ocupação do litoral nordestino",
+                        "Expansão para a Amazônia",
+                        "Desenvolvimento do Centro-Oeste"
+                    ],
+                    correct: 1,
+                    explanation: "A produção açucareira levou à ocupação e povoamento do litoral nordestino, onde foram estabelecidos os primeiros núcleos urbanos significativos do Brasil colonial."
                 }
             ],
             
@@ -1362,7 +1546,7 @@
                 ]
             },
             
-            // Flash cards EXPANDIDOS (35 flashcards)
+            // Flash cards EXPANDIDOS (40 flashcards)
             flashcards: [
                 {
                     question: "Qual era a principal rota do tráfico transatlântico?",
@@ -1503,6 +1687,26 @@
                 {
                     question: "Qual a herança africana na cultura brasileira?",
                     answer: "Influência na música, dança, culinária, religião e vocabulário"
+                },
+                {
+                    question: "O que eram os tumbeiros?",
+                    answer: "Navios negreiros (devido à alta mortalidade durante a viagem)"
+                },
+                {
+                    question: "Qual a função da fornalha no engenho?",
+                    answer: "Aquecer os tachos onde o caldo de cana era fervido"
+                },
+                {
+                    question: "O que eram as feitorias?",
+                    answer: "Postos de comércio na costa africana para obtenção de escravos"
+                },
+                {
+                    question: "Qual a importância do massapê para a produção açucareira?",
+                    answer: "Era o solo fértil ideal para o cultivo da cana-de-açúcar"
+                },
+                {
+                    question: "O que foi a Lei do Ventre Livre?",
+                    answer: "Lei de 1871 que libertou os filhos de escravas nascidos a partir daquela data"
                 }
             ]
         };
@@ -1516,11 +1720,13 @@
             score: 0,
             currentQuestion: 0,
             userAnswers: [],
-            examAnswers: new Array(15).fill(null),
+            examAnswers: new Array(20).fill(null),
             currentFlashcard: 0,
             flashcardsCorrect: 0,
             studyChapter: 0,
-            wrongFlashcards: []
+            wrongFlashcards: [],
+            usedQuestions: new Set(), // Para controlar questões já usadas
+            usedFlashcards: new Set() // Para controlar flashcards já usados
         };
 
         // Estatísticas do jogador
@@ -1586,6 +1792,10 @@
                 gameState.timerInterval = null;
             }
             
+            // Limpar questões usadas
+            gameState.usedQuestions.clear();
+            gameState.usedFlashcards.clear();
+            
             // Atualizar estatísticas
             updateStatsDisplay();
             
@@ -1609,7 +1819,7 @@
             gameState.score = 0;
             gameState.currentQuestion = 0;
             gameState.userAnswers = [];
-            gameState.examAnswers = new Array(15).fill(null);
+            gameState.examAnswers = new Array(20).fill(null);
             gameState.currentFlashcard = 0;
             gameState.flashcardsCorrect = 0;
             
@@ -1626,6 +1836,25 @@
                     startFlashcardsGame();
                     break;
             }
+        }
+
+        // Obter questão única (não repetida)
+        function getUniqueQuestion(chapter, usedQuestions) {
+            const questions = gameData[chapter];
+            const availableQuestions = questions.filter((_, index) => !usedQuestions.has(`${chapter}-${index}`));
+            
+            if (availableQuestions.length === 0) {
+                // Se não houver mais questões disponíveis, reiniciar o conjunto
+                usedQuestions.clear();
+                return questions[Math.floor(Math.random() * questions.length)];
+            }
+            
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            const question = availableQuestions[randomIndex];
+            const originalIndex = questions.indexOf(question);
+            usedQuestions.add(`${chapter}-${originalIndex}`);
+            
+            return question;
         }
 
         // Iniciar jogo de competição de tempo
@@ -1663,10 +1892,9 @@
             
             // Determinar capítulo (primeiro 11, depois 12)
             const chapter = questionIndex < 10 ? 'chapter11' : 'chapter12';
-            const chapterQuestions = gameData[chapter];
             
-            // Selecionar pergunta aleatória do capítulo
-            const question = chapterQuestions[Math.floor(Math.random() * chapterQuestions.length)];
+            // Selecionar pergunta única do capítulo
+            const question = getUniqueQuestion(chapter, gameState.usedQuestions);
             
             document.getElementById('time-question-count').textContent = `${questionIndex + 1}/${totalQuestions}`;
             document.getElementById('time-question').textContent = question.question;
@@ -1762,6 +1990,14 @@
             // Se a resposta for muito curta (menos de 10 caracteres) ou repetir muitas palavras da pergunta
             if (userAnswer.length < 10) return false;
             
+            // Verificar se a resposta não é apenas repetição da pergunta
+            const questionWords = document.getElementById('time-question').textContent.toLowerCase().split(' ');
+            const repeatedWords = questionWords.filter(word => 
+                userAnswer.includes(word) && word.length > 3
+            );
+            
+            if (repeatedWords.length > 6) return false;
+            
             // Verificar palavras-chave
             if (keywords && keywords.length > 0) {
                 const foundKeywords = keywords.filter(keyword => 
@@ -1849,28 +2085,34 @@
         function loadExamQuestion(index) {
             gameState.currentQuestion = index;
             
-            document.getElementById('exam-question-count').textContent = `${index + 1}/15`;
+            document.getElementById('exam-question-count').textContent = `${index + 1}/20`;
             
             // Atualizar estado dos botões de navegação
             document.getElementById('exam-prev-btn').disabled = index === 0;
-            document.getElementById('exam-next-btn').style.display = index < 14 ? 'block' : 'none';
-            document.getElementById('exam-finish-btn').style.display = index === 14 ? 'block' : 'none';
+            document.getElementById('exam-next-btn').style.display = index < 19 ? 'block' : 'none';
+            document.getElementById('exam-finish-btn').style.display = index === 19 ? 'block' : 'none';
             
             const contentContainer = document.getElementById('exam-content');
             contentContainer.innerHTML = '';
             
             // Determinar tipo de pergunta baseado no índice (30% objetivas, 60% normais, 10% explicação)
             let questionType;
-            if (index < 5) { // 5 primeiras: fáceis
-                questionType = getRandomQuestionType(['multiple', 'truefalse'], 0.3);
-            } else if (index < 11) { // 6 próximas: médias
-                questionType = getRandomQuestionType(['multiple', 'text', 'truefalse'], 0.6);
-            } else { // 4 últimas: difíceis
-                questionType = getRandomQuestionType(['explain', 'text', 'multiple'], 0.1);
+            if (index < 6) { // 6 primeiras: objetivas
+                questionType = getRandomQuestionType(['multiple', 'truefalse'], 0);
+            } else if (index < 18) { // 12 próximas: normais
+                questionType = getRandomQuestionType(['multiple', 'text', 'truefalse'], 0.1);
+            } else { // 2 últimas: explicação
+                questionType = 'explain';
             }
             
-            // Selecionar questão aleatória do tipo e dificuldade adequados
-            const question = getRandomQuestionByTypeAndDifficulty(questionType, index);
+            // Determinar dificuldade
+            let difficulty;
+            if (index < 7) difficulty = 'easy';
+            else if (index < 15) difficulty = 'medium';
+            else difficulty = 'hard';
+            
+            // Selecionar questão única do tipo e dificuldade adequados
+            const question = getUniqueQuestionByTypeAndDifficulty(questionType, difficulty, index);
             
             document.getElementById('exam-question').textContent = question.question;
             
@@ -1980,30 +2222,46 @@
             }
         }
 
-        // Obter questão aleatória por tipo e dificuldade
-        function getRandomQuestionByTypeAndDifficulty(type, index) {
-            let difficulty;
-            if (index < 5) difficulty = 'easy';
-            else if (index < 11) difficulty = 'medium';
-            else difficulty = 'hard';
-            
-            // Escolher capítulo aleatório
-            const chapter = Math.random() < 0.5 ? 'chapter11' : 'chapter12';
+        // Obter questão única por tipo e dificuldade
+        function getUniqueQuestionByTypeAndDifficulty(type, difficulty, index) {
+            // Escolher capítulo baseado no índice (alternando)
+            const chapter = index % 2 === 0 ? 'chapter11' : 'chapter12';
             const questions = gameData[chapter].filter(q => 
                 q.type === type && q.difficulty === difficulty
             );
             
             // Se não houver questões do tipo específico, buscar qualquer uma da dificuldade
-            if (questions.length === 0) {
-                return gameData[chapter].filter(q => q.difficulty === difficulty)[0];
+            let availableQuestions = questions;
+            if (availableQuestions.length === 0) {
+                availableQuestions = gameData[chapter].filter(q => q.difficulty === difficulty);
             }
             
-            return questions[Math.floor(Math.random() * questions.length)];
+            // Filtrar questões já usadas
+            availableQuestions = availableQuestions.filter((q, idx) => 
+                !gameState.usedQuestions.has(`${chapter}-${gameData[chapter].indexOf(q)}`)
+            );
+            
+            if (availableQuestions.length === 0) {
+                // Se não houver mais questões disponíveis, reiniciar o conjunto
+                gameState.usedQuestions.clear();
+                availableQuestions = gameData[chapter].filter(q => 
+                    q.type === type && q.difficulty === difficulty
+                );
+                if (availableQuestions.length === 0) {
+                    availableQuestions = gameData[chapter].filter(q => q.difficulty === difficulty);
+                }
+            }
+            
+            const question = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+            const originalIndex = gameData[chapter].indexOf(question);
+            gameState.usedQuestions.add(`${chapter}-${originalIndex}`);
+            
+            return question;
         }
 
         // Próxima pergunta na prova
         function nextExamQuestion() {
-            if (gameState.currentQuestion < 14) {
+            if (gameState.currentQuestion < 19) {
                 loadExamQuestion(gameState.currentQuestion + 1);
             }
         }
@@ -2035,10 +2293,10 @@
             gameState.score = correctCount;
             
             // Atualizar estatísticas
-            playerStats.totalQuestions += 15;
+            playerStats.totalQuestions += 20;
             playerStats.correctAnswers += correctCount;
             
-            const scorePercentage = Math.floor((correctCount / 15) * 100);
+            const scorePercentage = Math.floor((correctCount / 20) * 100);
             if (scorePercentage > playerStats.bestScore) {
                 playerStats.bestScore = scorePercentage;
             }
@@ -2054,14 +2312,26 @@
             gameState.currentScreen = "flashcards";
             
             // Se houver flashcards errados, começar por eles
+            let allFlashcards = [...gameData.flashcards];
             if (gameState.wrongFlashcards.length > 0) {
-                gameState.currentFlashcardDeck = [...gameState.wrongFlashcards, ...gameData.flashcards];
-            } else {
-                gameState.currentFlashcardDeck = [...gameData.flashcards];
+                // Adicionar flashcards errados no início
+                allFlashcards = [...gameState.wrongFlashcards, ...allFlashcards.filter(f => 
+                    !gameState.wrongFlashcards.some(wf => wf.question === f.question)
+                )];
             }
             
-            // Embaralhar deck
-            gameState.currentFlashcardDeck = shuffleArray(gameState.currentFlashcardDeck);
+            // Filtrar flashcards já usados
+            const availableFlashcards = allFlashcards.filter((f, index) => 
+                !gameState.usedFlashcards.has(index)
+            );
+            
+            if (availableFlashcards.length === 0) {
+                // Se não houver mais flashcards disponíveis, reiniciar
+                gameState.usedFlashcards.clear();
+                gameState.currentFlashcardDeck = shuffleArray([...allFlashcards]);
+            } else {
+                gameState.currentFlashcardDeck = shuffleArray(availableFlashcards);
+            }
             
             loadFlashcard(0);
         }
@@ -2086,6 +2356,12 @@
             const flashcard = gameState.currentFlashcardDeck[index];
             document.getElementById('flashcard-question').textContent = flashcard.question;
             document.getElementById('flashcard-answer-text').textContent = flashcard.answer;
+            
+            // Marcar como usado
+            const originalIndex = gameData.flashcards.findIndex(f => f.question === flashcard.question);
+            if (originalIndex !== -1) {
+                gameState.usedFlashcards.add(originalIndex);
+            }
             
             // Esconder resposta e opções
             document.getElementById('flashcard-options').style.display = 'none';
@@ -2220,7 +2496,7 @@
                     break;
                 case 'exam':
                     title = 'Simulação de Prova - Resultados';
-                    totalQuestions = 15;
+                    totalQuestions = 20;
                     break;
                 case 'flashcards':
                     title = 'Flashcards - Resultados';
