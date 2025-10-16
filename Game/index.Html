@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Estudo: História - Telaris 7º Ano</title>
+    <style>
+        :root {
+            --primary: #8B4513;
+            --secondary: #D2691E;
+            --accent: #FFD700;
+            --dark: #2F1B0C;
+            --light: #F5F5DC;
+            --correct: #4CAF50;
+            --wrong: #F44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--dark), var(--primary));
+            color: white;
+            padding: 25px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: titleGlow 3s infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
+            to { text-shadow: 2px 2px 20px var(--accent); }
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .chapter-tags {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .chapter-tag {
+            background: var(--secondary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .main-content {
+            padding: 30px;
+            min-height: 500px;
+        }
+        
+        /* Menu Principal */
+        .menu-screen {
+            text-align: center;
+            animation: fadeIn 1s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .menu-title {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: var(--accent);
+        }
+        
+        .menu-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .menu-btn {
+            background: linear-gradient(to bottom, var(--secondary), var(--primary));
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 120px;
+        }
+        
+        .menu-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(to bottom, var(--primary), var(--dark));
+        }
+        
+        .menu-btn i {
+            font-size: 2rem;
+        }
+        
+        .stats-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .stats-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Telas de jogo */
+        .game-screen {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .game-title {
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+        
+        .game-info {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .info-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .timer {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .question-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .option-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--accent);
+        }
+        
+        .option-btn.correct {
+            background: var(--correct);
+            border-color: var(--correct);
+        }
+        
+        .option-btn.wrong {
+            background: var(--wrong);
+            border-color: var(--wrong);
+        }
+        
+        .true-false-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .true-false-btn {
+            flex: 1;
+            padding: 20px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .true-btn {
+            background: var(--correct);
+            color: white;
+        }
+        
+        .false-btn {
+            background: var(--wrong);
+            color: white;
+        }
+        
+        .true-false-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .input-answer {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .submit-btn {
+            background: var(--accent);
+            color: var(--dark);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .submit-btn:hover {
+            background: #FFC400;
+            transform: scale(1.05);
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: var(--primary);
+        }
+        
+        .study-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .study-section {
+            margin-bottom: 30px;
+        }
+        
+        .study-section h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 5px;
+        }
+        
+        .study-section p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .study-section ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .study-section li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .results-screen {
+            text-align: center;
+            animation: fadeIn 1s;
+        }
+        
+        .results-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .score-display {
+            font-size: 5rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 30px 0;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .results-details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .result-label {
+            font-weight: bold;
+        }
+        
+        .result-value {
+            color: var(--accent);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: var(--dark);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--accent);
+            animation: modalAppear 0.5s;
+        }
+        
+        @keyframes modalAppear {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        .modal-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-btn.primary {
+            background: var(--accent);
+            color: var(--dark);
+        }
+        
+        .modal-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .modal-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .menu-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .game-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .true-false-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jogo de Estudo: História</h1>
+            <div class="subtitle">Telaris 7º Ano - Capítulos 11 e 12</div>
+            <div class="chapter-tags">
+                <div class="chapter-tag">Capítulo 11: Escravidão e Resistência</div>
+                <div class="chapter-tag">Capítulo 12: Sociedade Açucareira</div>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <!-- Tela do Menu Principal -->
+            <div id="menu-screen" class="menu-screen">
+                <h2 class="menu-title">Escolha um Modo de Jogo</h2>
+                
+                <div class="menu-options">
+                    <button class="menu-btn" onclick="startGame('time')">
+                        <i>⏱️</i>
+                        <span>Competição de Tempo</span>
+                    </button>
+                    
+                    <button class="menu-btn" onclick="startGame('exam')">
+                        <i>📝</i>
+                        <span>Simulação de Prova</span>
+                    </button>
+                    
+                    <button class="menu-btn" onclick="showStudyOptions()">
+                        <i>📚</i>
+                        <span>Modo Estudo</span>
+                    </button>
+                    
+                    <button class="menu-btn" onclick="startGame('flashcards')">
+                        <i>🔁</i>
+                        <span>Flashcards Rápidos</span>
+                    </button>
+                </div>
+                
+                <div class="stats-container">
+                    <h3 class="stats-title">Suas Estatísticas</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="best-time">00:00</div>
+                            <div class="stat-label">Melhor Tempo</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="best-score">0%</div>
+                            <div class="stat-label">Melhor Nota</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-questions">0</div>
+                            <div class="stat-label">Questões Respondidas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="correct-answers">0</div>
+                            <div class="stat-label">Acertos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tela do Jogo (Competição de Tempo) -->
+            <div id="time-game-screen" class="game-screen">
+                <div class="game-header">
+                    <h2 class="game-title">Competição de Tempo</h2>
+                    <div class="game-info">
+                        <div class="info-item">
+                            <span>Tempo:</span>
+                            <span class="timer" id="time-timer">02:00</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Questão:</span>
+                            <span id="time-question-count">1/20</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Pontuação:</span>
+                            <span id="time-score">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question-text" id="time-question">Carregando pergunta...</div>
+                    <div class="options-container" id="time-options">
+                        <!-- As opções serão inseridas aqui via JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="navigation">
+                    <button class="nav-btn" onclick="showMenu()">Voltar ao Menu</button>
+                    <button class="nav-btn" onclick="nextTimeQuestion()" id="time-next-btn" style="display:none;">Próxima</button>
+                </div>
+            </div>
+            
+            <!-- Tela do Jogo (Simulação de Prova) -->
+            <div id="exam-game-screen" class="game-screen">
+                <div class="game-header">
+                    <h2 class="game-title">Simulação de Prova</h2>
+                    <div class="game-info">
+                        <div class="info-item">
+                            <span>Questão:</span>
+                            <span id="exam-question-count">1/16</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Tempo:</span>
+                            <span class="timer" id="exam-timer">40:00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question-text" id="exam-question">Carregando pergunta...</div>
+                    <div id="exam-content">
+                        <!-- O conteúdo da pergunta será inserido aqui via JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="navigation">
+                    <button class="nav-btn" onclick="showMenu()">Voltar ao Menu</button>
+                    <button class="nav-btn" onclick="previousExamQuestion()" id="exam-prev-btn" disabled>Anterior</button>
+                    <button class="nav-btn" onclick="nextExamQuestion()" id="exam-next-btn">Próxima</button>
+                    <button class="nav-btn" onclick="finishExam()" id="exam-finish-btn" style="display:none;">Finalizar Prova</button>
+                </div>
+            </div>
+            
+            <!-- Tela do Modo Estudo -->
+            <div id="study-screen" class="game-screen">
+                <div class="game-header">
+                    <h2 class="game-title">Modo Estudo</h2>
+                    <div class="game-info">
+                        <div class="info-item">
+                            <span>Capítulo:</span>
+                            <span id="study-chapter">11 e 12</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="study-content" id="study-content">
+                    <!-- O conteúdo de estudo será inserido aqui via JavaScript -->
+                </div>
+                
+                <div class="navigation">
+                    <button class="nav-btn" onclick="showStudyOptions()">Voltar às Opções</button>
+                    <button class="nav-btn" onclick="showMenu()">Menu Principal</button>
+                </div>
+            </div>
+            
+            <!-- Tela do Jogo (Flashcards) -->
+            <div id="flashcards-game-screen" class="game-screen">
+                <div class="game-header">
+                    <h2 class="game-title">Flashcards Rápidos</h2>
+                    <div class="game-info">
+                        <div class="info-item">
+                            <span>Cartão:</span>
+                            <span id="flashcard-count">1/30</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Acertos:</span>
+                            <span id="flashcard-score">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question-text" id="flashcard-question">Carregando pergunta...</div>
+                    <div class="options-container" id="flashcard-options" style="display:none;">
+                        <!-- As opções serão inseridas aqui via JavaScript -->
+                    </div>
+                    <div id="flashcard-answer" style="display:none; margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                        <strong>Resposta:</strong> <span id="flashcard-answer-text"></span>
+                    </div>
+                </div>
+                
+                <div class="navigation">
+                    <button class="nav-btn" onclick="showMenu()">Voltar ao Menu</button>
+                    <button class="nav-btn" onclick="showFlashcardAnswer()" id="flashcard-show-btn">Mostrar Resposta</button>
+                    <button class="nav-btn" onclick="nextFlashcard()" id="flashcard-next-btn" style="display:none;">Próximo</button>
+                </div>
+            </div>
+            
+            <!-- Tela de Resultados -->
+            <div id="results-screen" class="game-screen results-screen">
+                <h2 class="results-title" id="results-title">Resultados</h2>
+                <div class="score-display" id="final-score">0%</div>
+                
+                <div class="results-details">
+                    <div class="result-item">
+                        <span class="result-label">Questões Respondidas:</span>
+                        <span class="result-value" id="results-total">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Acertos:</span>
+                        <span class="result-value" id="results-correct">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Erros:</span>
+                        <span class="result-value" id="results-wrong">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Tempo:</span>
+                        <span class="result-value" id="results-time">00:00</span>
+                    </div>
+                </div>
+                
+                <div class="navigation">
+                    <button class="nav-btn" onclick="showMenu()">Voltar ao Menu</button>
+                    <button class="nav-btn" onclick="restartGame()">Jogar Novamente</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            Jogo educativo desenvolvido para estudo do livro Telaris de História - 7º Ano
+        </footer>
+    </div>
+    
+    <!-- Modal de Opções de Estudo -->
+    <div id="study-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Escolha o Conteúdo para Estudar</h3>
+            <div class="menu-options" style="grid-template-columns: 1fr; margin-top: 20px;">
+                <button class="menu-btn" onclick="startStudy(11)">
+                    <span>Capítulo 11: Escravidão e Resistência</span>
+                </button>
+                <button class="menu-btn" onclick="startStudy(12)">
+                    <span>Capítulo 12: Sociedade Açucareira</span>
+                </button>
+                <button class="menu-btn" onclick="startStudy(0)">
+                    <span>Ambos os Capítulos</span>
+                </button>
+                <button class="menu-btn" onclick="hideStudyModal()">
+                    <span>Voltar ao Menu</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmação -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title" id="confirm-title">Confirmar Ação</h3>
+            <p id="confirm-message">Tem certeza que deseja fazer isso?</p>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="hideConfirmModal()">Cancelar</button>
+                <button class="modal-btn primary" onclick="confirmAction()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados do jogo
+        const gameData = {
+            // Questões do Capítulo 11
+            chapter11: [
+                {
+                    type: "multiple",
+                    question: "Qual era a principal rota do tráfico transatlântico de escravos?",
+                    options: [
+                        "Europa - América - África",
+                        "África - América - Europa",
+                        "América - Europa - África",
+                        "África - Europa - América"
+                    ],
+                    correct: 1,
+                    explanation: "A rota do tráfico transatlântico seguia o padrão África - América - Europa, conhecida como 'Comércio Triangular'."
+                },
+                {
+                    type: "truefalse",
+                    question: "Marque V para Verdadeiro e F para Falso:",
+                    statements: [
+                        "Os navios negreiros transportavam africanos em condições desumanas.",
+                        "Apenas povos bantos foram escravizados no Brasil.",
+                        "O Rio de Janeiro foi um importante centro de distribuição de escravos.",
+                        "Os sudaneses não tiveram influência cultural no Brasil.",
+                        "A mão de obra indígena substituiu completamente a africana."
+                    ],
+                    answers: [true, false, true, false, false],
+                    explanation: "Diversos grupos étnicos foram escravizados, com sudaneses e bantos tendo grande influência cultural. A mão de obra indígena foi utilizada, mas não substituiu a africana."
+                },
+                {
+                    type: "multiple",
+                    question: "Quem foi Zumbi dos Palmares?",
+                    options: [
+                        "Um capitão do mato que caçava escravizados fugitivos",
+                        "O último líder do Quilombo dos Palmares",
+                        "Um traficante de escravos português",
+                        "Um missionário que defendia o fim da escravidão"
+                    ],
+                    correct: 1,
+                    explanation: "Zumbi dos Palmares foi o último líder do Quilombo dos Palmares, símbolo da resistência à escravidão no Brasil."
+                },
+                {
+                    type: "text",
+                    question: "Cite três formas de resistência dos escravizados no período colonial.",
+                    answer: "fugas, formação de quilombos, revoltas, sabotagem, manutenção de culturas africanas",
+                    explanation: "As principais formas de resistência incluíam fugas individuais e em grupo, formação de quilombos, revoltas armadas, sabotagem das ferramentas de trabalho e a preservação de suas culturas e religiões de origem."
+                },
+                {
+                    type: "multiple",
+                    question: "Qual era a função dos capitães-do-mato?",
+                    options: [
+                        "Proteger os quilombos dos ataques",
+                        "Capturar escravizados fugitivos",
+                        "Comandar os navios negreiros",
+                        "Organizar o comércio de escravos"
+                    ],
+                    correct: 1,
+                    explanation: "Os capitães-do-mato eram contratados para capturar escravizados que haviam fugido e devolvê-los aos seus senhores."
+                }
+            ],
+            
+            // Questões do Capítulo 12
+            chapter12: [
+                {
+                    type: "multiple",
+                    question: "Qual foi o principal produto da economia colonial brasileira no século XVI?",
+                    options: [
+                        "Algodão",
+                        "Café",
+                        "Açúcar",
+                        "Ouro"
+                    ],
+                    correct: 2,
+                    explanation: "O açúcar foi o principal produto da economia colonial brasileira durante o século XVI, tornando-se a base da sociedade açucareira."
+                },
+                {
+                    type: "truefalse",
+                    question: "Marque V para Verdadeiro e F para Falso sobre a sociedade açucareira:",
+                    statements: [
+                        "Os senhores de engenho detinham grande poder político e econômico.",
+                        "A sociedade era igualitária, sem divisões sociais.",
+                        "Os escravizados trabalhavam apenas na lavoura de cana.",
+                        "O engenho era composto apenas pelo local de moagem da cana.",
+                        "O comércio do açúcar enriqueceu principalmente a Coroa Portuguesa."
+                    ],
+                    answers: [true, false, false, false, true],
+                    explanation: "A sociedade era hierarquizada, com senhores de engenho no topo. Escravizados trabalhavam em todas as etapas. O engenho incluía toda a propriedade. A Coroa Portuguesa lucrava com impostos sobre o açúcar."
+                },
+                {
+                    type: "multiple",
+                    question: "O que caracterizava a casa-grande na sociedade açucareira?",
+                    options: [
+                        "Era a moradia dos escravizados",
+                        "Era o local de processamento da cana",
+                        "Era a residência do senhor de engenho e sua família",
+                        "Era o local de cultivo da cana-de-açúcar"
+                    ],
+                    correct: 2,
+                    explanation: "A casa-grande era a residência do senhor de engenho e sua família, simbolizando o poder e a riqueza da elite açucareira."
+                },
+                {
+                    type: "text",
+                    question: "Explique a importância dos engenhos para a economia colonial.",
+                    answer: "os engenhos eram unidades produtivas completas, onde a cana era transformada em açúcar, sendo o centro da economia colonial",
+                    explanation: "Os engenhos eram complexos agroindustriais que integravam o plantio da cana, sua moagem e o processamento do açúcar. Eram a base da economia colonial e organizavam a vida social na colônia."
+                },
+                {
+                    type: "multiple",
+                    question: "Qual era a principal função da senzala?",
+                    options: [
+                        "Local de culto religioso",
+                        "Moradia dos escravizados",
+                        "Armazenamento do açúcar",
+                        "Local de processamento da cana"
+                    ],
+                    correct: 1,
+                    explanation: "A senzala era o local onde os escravizados moravam, geralmente em condições precárias e superlotadas."
+                }
+            ],
+            
+            // Conteúdo de estudo
+            studyContent: {
+                chapter11: [
+                    {
+                        title: "Escravização e Tráfico de Africanos",
+                        content: `
+                            <p>O tráfico transatlântico de escravos foi um dos maiores deslocamentos forçados de população da história. Entre os séculos XVI e XIX, milhões de africanos foram trazidos para as Américas.</p>
+                            <h4>Principais rotas:</h4>
+                            <ul>
+                                <li><strong>Rota Continental:</strong> Dentro da África, captura e transporte para os portos</li>
+                                <li><strong>Rota Transatlântica:</strong> Travessia do oceano Atlântico (a "Travessia do Médio")</li>
+                                <li><strong>Distribuição nas Américas:</strong> Os escravizados eram distribuídos para diferentes colônias</li>
+                            </ul>
+                            <h4>Grupos étnicos escravizados:</h4>
+                            <ul>
+                                <li><strong>Sudaneses:</strong> Originários da região do Sudão (atual Nigéria, Benin, Togo)</li>
+                                <li><strong>Bantos:</strong> Originários de Angola, Congo e Moçambique</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Navios Negreiros e a Travessia",
+                        content: `
+                            <p>Os navios negreiros, também conhecidos como tumbeiros, transportavam os africanos em condições desumanas:</p>
+                            <ul>
+                                <li>Superlotação extrema nos porões</li>
+                                <li>Falta de higiene e doenças</li>
+                                <li>Alimentação precária</li>
+                                <li>Altíssima mortalidade durante a viagem</li>
+                            </ul>
+                            <p>Ao chegarem ao Brasil, os escravizados eram conduzidos para leilões ou armazéns, onde eram comprados por senhores de engenho, fazendeiros e outros proprietários. O Rio de Janeiro tornou-se um importante centro de distribuição de escravos.</p>
+                        `
+                    },
+                    {
+                        title: "Mão de Obra Indígena e Africana",
+                        content: `
+                            <p>Inicialmente, os portugueses utilizaram a mão de obra indígena, mas gradualmente a substituíram pela africana devido a:</p>
+                            <ul>
+                                <li>Maior resistência a doenças europeias</li>
+                                <li>Conhecimento de técnicas agrícolas</li>
+                                <li>Dificuldade em escravizar indígenas (leis e resistência)</li>
+                                <li>Interesse da Coroa em lucrar com o tráfico</li>
+                            </ul>
+                            <p>Os africanos escravizados foram utilizados em diversas atividades:</p>
+                            <ul>
+                                <li>Agricultura (cana-de-açúcar, café, algodão)</li>
+                                <li>Mineração</li>
+                                <li>Serviços domésticos</li>
+                                <li>Ofícios especializados (carpinteiros, ferreiros, etc.)</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Resistência e Quilombos",
+                        content: `
+                            <p>Os escravizados desenvolveram diversas formas de resistência:</p>
+                            <h4>Resistência cotidiana:</h4>
+                            <ul>
+                                <li>Simulação de doenças</li>
+                                <li>Sabotagem de ferramentas</li>
+                                <li>Roubo de alimentos</li>
+                                <li>Manutenção de culturas africanas</li>
+                            </ul>
+                            <h4>Resistência coletiva:</h4>
+                            <ul>
+                                <li>Fugas em grupo</li>
+                                <li>Formação de quilombos</li>
+                                <li>Revoltas armadas</li>
+                            </ul>
+                            <h4>Quilombo dos Palmares:</h4>
+                            <p>Maior e mais duradouro quilombo do período colonial, localizado em Alagoas. Teve como último líder Zumbi dos Palmares, símbolo da resistência negra no Brasil.</p>
+                        `
+                    }
+                ],
+                chapter12: [
+                    {
+                        title: "A Produção Açucareira",
+                        content: `
+                            <p>O açúcar tornou-se o principal produto da colônia brasileira no século XVI devido a:</p>
+                            <ul>
+                                <li>Condições climáticas favoráveis</li>
+                                <li>Solo apropriado (massapê)</li>
+                                <li>Experiência portuguesa no cultivo</li>
+                                <li>Alta demanda europeia</li>
+                                <li>Financiamento holandês</li>
+                            </ul>
+                            <h4>Engenhos de Açúcar:</h4>
+                            <p>Eram complexos produtivos que incluíam:</p>
+                            <ul>
+                                <li>Casa-grande (moradia do senhor)</li>
+                                <li>Senzala (moradia dos escravizados)</li>
+                                <li>Capela</li>
+                                <li>Casa de purgar</li>
+                                <li>Moenda</li>
+                                <li>Fornalha</li>
+                                <li>Plantations (lavouras de cana)</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "A Sociedade Açucareira",
+                        content: `
+                            <p>A sociedade colonial era hierarquizada e estratificada:</p>
+                            <h4>Topo da pirâmide:</h4>
+                            <ul>
+                                <li><strong>Senhores de engenho:</strong> Detinham poder político, econômico e social</li>
+                                <li><strong>Altos funcionários:</strong> Representantes da Coroa</li>
+                            </ul>
+                            <h4>Camadas intermediárias:</h4>
+                            <ul>
+                                <li><strong>Comerciantes:</strong> Negociavam o açúcar e escravos</li>
+                                <li><strong>Padres e militares:</strong> Possuíam certo prestígio</li>
+                                <li><strong>Lavradores de cana:</strong> Proprietários menores</li>
+                            </ul>
+                            <h4>Base da sociedade:</h4>
+                            <ul>
+                                <li><strong>Escravizados:</strong> Maioria da população, sem direitos</li>
+                                <li><strong>Indígenas:</strong> Também subjugados, quando não escravizados</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Economia e Comércio",
+                        content: `
+                            <p>O açúcar brasileiro era produzido principalmente para exportação:</p>
+                            <ul>
+                                <li>Destino: Mercado europeu</li>
+                                <li>Intermediação: Comerciantes portugueses e holandeses</li>
+                                <li>Transporte: Frotas marítimas protegidas</li>
+                            </ul>
+                            <h4>Pacto Colonial:</h4>
+                            <p>O Brasil colônia só podia comercializar com Portugal, que:</p>
+                            <ul>
+                                <li>Comprava produtos a preços baixos</li>
+                                <li>Vendia manufaturados a preços altos</li>
+                                <li>Cobrava impostos sobre a produção</li>
+                            </ul>
+                            <p>Este sistema garantia lucros para Portugal e limitava o desenvolvimento da colônia.</p>
+                        `
+                    }
+                ]
+            },
+            
+            // Flash cards
+            flashcards: [
+                {
+                    question: "Qual era a principal rota do tráfico transatlântico?",
+                    answer: "África - América - Europa (Comércio Triangular)"
+                },
+                {
+                    question: "Quem foi Zumbi dos Palmares?",
+                    answer: "Último líder do Quilombo dos Palmares, símbolo da resistência negra"
+                },
+                {
+                    question: "Qual era o principal produto da economia colonial no século XVI?",
+                    answer: "Açúcar"
+                },
+                {
+                    question: "O que eram os navios negreiros?",
+                    answer: "Navios que transportavam escravizados africanos em condições desumanas"
+                },
+                {
+                    question: "O que caracterizava a casa-grande?",
+                    answer: "Era a residência do senhor de engenho, símbolo de poder na sociedade colonial"
+                },
+                {
+                    question: "Qual era a função da senzala?",
+                    answer: "Moradia dos escravizados, geralmente em condições precárias"
+                },
+                {
+                    question: "O que eram os quilombos?",
+                    answer: "Comunidades formadas por escravizados fugitivos"
+                },
+                {
+                    question: "Quem eram os capitães-do-mato?",
+                    answer: "Homens contratados para capturar escravizados fugitivos"
+                },
+                {
+                    question: "Quais os dois principais grupos étnicos africanos escravizados no Brasil?",
+                    answer: "Sudaneses e Bantos"
+                },
+                {
+                    question: "Qual cidade foi importante centro de distribuição de escravos?",
+                    answer: "Rio de Janeiro"
+                }
+            ]
+        };
+
+        // Estado do jogo
+        let gameState = {
+            currentScreen: "menu",
+            currentGame: null,
+            timeLeft: 0,
+            timerInterval: null,
+            score: 0,
+            currentQuestion: 0,
+            userAnswers: [],
+            examAnswers: new Array(16).fill(null),
+            currentFlashcard: 0,
+            flashcardsCorrect: 0,
+            studyChapter: 0
+        };
+
+        // Estatísticas do jogador
+        let playerStats = {
+            bestTime: 0,
+            bestScore: 0,
+            totalQuestions: 0,
+            correctAnswers: 0
+        };
+
+        // Carregar estatísticas do localStorage
+        function loadStats() {
+            const savedStats = localStorage.getItem('historyGameStats');
+            if (savedStats) {
+                playerStats = JSON.parse(savedStats);
+                updateStatsDisplay();
+            }
+        }
+
+        // Salvar estatísticas no localStorage
+        function saveStats() {
+            localStorage.setItem('historyGameStats', JSON.stringify(playerStats));
+        }
+
+        // Atualizar exibição das estatísticas
+        function updateStatsDisplay() {
+            document.getElementById('best-time').textContent = formatTime(playerStats.bestTime);
+            document.getElementById('best-score').textContent = playerStats.bestScore + '%';
+            document.getElementById('total-questions').textContent = playerStats.totalQuestions;
+            document.getElementById('correct-answers').textContent = playerStats.correctAnswers;
+        }
+
+        // Formatar tempo (segundos para MM:SS)
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Mostrar menu principal
+        function showMenu() {
+            // Parar qualquer temporizador ativo
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
+            }
+            
+            // Atualizar estatísticas
+            updateStatsDisplay();
+            
+            // Mostrar tela do menu
+            hideAllScreens();
+            document.getElementById('menu-screen').style.display = 'block';
+            gameState.currentScreen = "menu";
+        }
+
+        // Esconder todas as telas
+        function hideAllScreens() {
+            const screens = document.querySelectorAll('.game-screen, .menu-screen');
+            screens.forEach(screen => {
+                screen.style.display = 'none';
+            });
+        }
+
+        // Iniciar jogo
+        function startGame(gameType) {
+            gameState.currentGame = gameType;
+            gameState.score = 0;
+            gameState.currentQuestion = 0;
+            gameState.userAnswers = [];
+            gameState.examAnswers = new Array(16).fill(null);
+            gameState.currentFlashcard = 0;
+            gameState.flashcardsCorrect = 0;
+            
+            hideAllScreens();
+            
+            switch(gameType) {
+                case 'time':
+                    startTimeGame();
+                    break;
+                case 'exam':
+                    startExamGame();
+                    break;
+                case 'flashcards':
+                    startFlashcardsGame();
+                    break;
+            }
+        }
+
+        // Iniciar jogo de competição de tempo
+        function startTimeGame() {
+            document.getElementById('time-game-screen').style.display = 'block';
+            gameState.currentScreen = "time";
+            
+            // Configurar tempo inicial (2 minutos)
+            gameState.timeLeft = 120;
+            updateTimeDisplay();
+            
+            // Iniciar temporizador
+            gameState.timerInterval = setInterval(() => {
+                gameState.timeLeft--;
+                updateTimeDisplay();
+                
+                if (gameState.timeLeft <= 0) {
+                    endTimeGame();
+                }
+            }, 1000);
+            
+            // Carregar primeira pergunta
+            loadTimeQuestion();
+        }
+
+        // Atualizar display do tempo
+        function updateTimeDisplay() {
+            document.getElementById('time-timer').textContent = formatTime(gameState.timeLeft);
+        }
+
+        // Carregar pergunta do modo tempo
+        function loadTimeQuestion() {
+            const questionIndex = gameState.currentQuestion;
+            const totalQuestions = 20;
+            
+            // Determinar capítulo (primeiro 11, depois 12)
+            const chapter = questionIndex < 10 ? 'chapter11' : 'chapter12';
+            const chapterQuestions = gameData[chapter];
+            
+            // Selecionar pergunta aleatória do capítulo
+            const question = chapterQuestions[Math.floor(Math.random() * chapterQuestions.length)];
+            
+            document.getElementById('time-question-count').textContent = `${questionIndex + 1}/${totalQuestions}`;
+            document.getElementById('time-question').textContent = question.question;
+            document.getElementById('time-score').textContent = gameState.score;
+            
+            const optionsContainer = document.getElementById('time-options');
+            optionsContainer.innerHTML = '';
+            
+            // Esconder botão "Próxima"
+            document.getElementById('time-next-btn').style.display = 'none';
+            
+            if (question.type === 'multiple') {
+                question.options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    button.onclick = () => checkTimeAnswer(index, question.correct);
+                    optionsContainer.appendChild(button);
+                });
+            } else if (question.type === 'truefalse') {
+                // Para questões V/F, vamos simplificar e usar apenas a primeira afirmação
+                const statement = question.statements[0];
+                document.getElementById('time-question').textContent = question.question + " " + statement;
+                
+                const trueBtn = document.createElement('button');
+                trueBtn.className = 'option-btn';
+                trueBtn.textContent = 'Verdadeiro';
+                trueBtn.onclick = () => checkTimeAnswer(true, question.answers[0]);
+                optionsContainer.appendChild(trueBtn);
+                
+                const falseBtn = document.createElement('button');
+                falseBtn.className = 'option-btn';
+                falseBtn.textContent = 'Falso';
+                falseBtn.onclick = () => checkTimeAnswer(false, question.answers[0]);
+                optionsContainer.appendChild(falseBtn);
+            } else if (question.type === 'text') {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'input-answer';
+                input.placeholder = 'Digite sua resposta aqui...';
+                optionsContainer.appendChild(input);
+                
+                const submitBtn = document.createElement('button');
+                submitBtn.className = 'submit-btn';
+                submitBtn.textContent = 'Enviar Resposta';
+                submitBtn.onclick = () => {
+                    const userAnswer = input.value.toLowerCase().trim();
+                    checkTimeAnswer(userAnswer, question.answer);
+                };
+                optionsContainer.appendChild(submitBtn);
+            }
+        }
+
+        // Verificar resposta no modo tempo
+        function checkTimeAnswer(userAnswer, correctAnswer) {
+            const options = document.querySelectorAll('#time-options .option-btn, #time-options .submit-btn');
+            options.forEach(opt => opt.disabled = true);
+            
+            let isCorrect = false;
+            
+            if (typeof userAnswer === 'boolean' || typeof correctAnswer === 'boolean') {
+                isCorrect = userAnswer === correctAnswer;
+            } else if (typeof userAnswer === 'number') {
+                isCorrect = userAnswer === correctAnswer;
+            } else {
+                // Para respostas textuais, verificar se a resposta do usuário contém palavras-chave
+                const keywords = correctAnswer.toLowerCase().split(',');
+                isCorrect = keywords.some(keyword => 
+                    userAnswer.includes(keyword.trim())
+                );
+            }
+            
+            if (isCorrect) {
+                gameState.score += 10;
+                document.getElementById('time-score').textContent = gameState.score;
+                
+                // Adicionar tempo por acerto
+                gameState.timeLeft += 10;
+                updateTimeDisplay();
+                
+                // Atualizar estatísticas
+                playerStats.correctAnswers++;
+                playerStats.totalQuestions++;
+            } else {
+                playerStats.totalQuestions++;
+            }
+            
+            // Mostrar botão "Próxima"
+            document.getElementById('time-next-btn').style.display = 'block';
+            
+            saveStats();
+        }
+
+        // Próxima pergunta no modo tempo
+        function nextTimeQuestion() {
+            gameState.currentQuestion++;
+            
+            if (gameState.currentQuestion >= 20) {
+                endTimeGame();
+            } else {
+                loadTimeQuestion();
+            }
+        }
+
+        // Finalizar jogo de tempo
+        function endTimeGame() {
+            clearInterval(gameState.timerInterval);
+            
+            // Atualizar melhor tempo, se aplicável
+            if (gameState.score > 0) {
+                const timeUsed = 120 - gameState.timeLeft;
+                if (playerStats.bestTime === 0 || timeUsed < playerStats.bestTime) {
+                    playerStats.bestTime = timeUsed;
+                }
+                
+                // Atualizar melhor pontuação
+                const scorePercentage = Math.min(100, Math.floor((gameState.score / 200) * 100));
+                if (scorePercentage > playerStats.bestScore) {
+                    playerStats.bestScore = scorePercentage;
+                }
+                
+                saveStats();
+            }
+            
+            showResults('time');
+        }
+
+        // Iniciar jogo de simulação de prova
+        function startExamGame() {
+            document.getElementById('exam-game-screen').style.display = 'block';
+            gameState.currentScreen = "exam";
+            
+            // Configurar tempo (40 minutos)
+            gameState.timeLeft = 40 * 60;
+            updateExamTimeDisplay();
+            
+            // Iniciar temporizador
+            gameState.timerInterval = setInterval(() => {
+                gameState.timeLeft--;
+                updateExamTimeDisplay();
+                
+                if (gameState.timeLeft <= 0) {
+                    finishExam();
+                }
+            }, 1000);
+            
+            // Carregar primeira pergunta
+            loadExamQuestion(0);
+        }
+
+        // Atualizar display do tempo da prova
+        function updateExamTimeDisplay() {
+            document.getElementById('exam-timer').textContent = formatTime(gameState.timeLeft);
+        }
+
+        // Carregar pergunta da prova
+        function loadExamQuestion(index) {
+            gameState.currentQuestion = index;
+            
+            document.getElementById('exam-question-count').textContent = `${index + 1}/16`;
+            
+            // Atualizar estado dos botões de navegação
+            document.getElementById('exam-prev-btn').disabled = index === 0;
+            document.getElementById('exam-next-btn').style.display = index < 15 ? 'block' : 'none';
+            document.getElementById('exam-finish-btn').style.display = index === 15 ? 'block' : 'none';
+            
+            const contentContainer = document.getElementById('exam-content');
+            contentContainer.innerHTML = '';
+            
+            // Determinar tipo de pergunta (simulando uma prova mista)
+            let question;
+            if (index < 5) {
+                // Primeiras 5 questões: Capítulo 11
+                question = gameData.chapter11[Math.floor(Math.random() * gameData.chapter11.length)];
+            } else if (index < 10) {
+                // Próximas 5 questões: Capítulo 12
+                question = gameData.chapter12[Math.floor(Math.random() * gameData.chapter12.length)];
+            } else {
+                // Últimas 6 questões: Misturadas
+                const chapter = Math.random() < 0.5 ? 'chapter11' : 'chapter12';
+                question = gameData[chapter][Math.floor(Math.random() * gameData[chapter].length)];
+            }
+            
+            document.getElementById('exam-question').textContent = question.question;
+            
+            // Verificar se já há resposta salva
+            const savedAnswer = gameState.examAnswers[index];
+            
+            if (question.type === 'multiple') {
+                question.options.forEach((option, i) => {
+                    const button = document.createElement('button');
+                    button.className = 'option-btn';
+                    if (savedAnswer === i) {
+                        button.style.borderColor = 'var(--accent)';
+                    }
+                    button.textContent = option;
+                    button.onclick = () => {
+                        // Remover destaque de outras opções
+                        document.querySelectorAll('#exam-content .option-btn').forEach(btn => {
+                            btn.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        });
+                        
+                        // Destacar opção selecionada
+                        button.style.borderColor = 'var(--accent)';
+                        
+                        // Salvar resposta
+                        gameState.examAnswers[index] = i;
+                    };
+                    contentContainer.appendChild(button);
+                });
+            } else if (question.type === 'truefalse') {
+                // Para a prova, vamos usar todas as afirmações
+                const statementsContainer = document.createElement('div');
+                statementsContainer.style.marginBottom = '20px';
+                
+                question.statements.forEach((statement, i) => {
+                    const statementDiv = document.createElement('div');
+                    statementDiv.style.marginBottom = '15px';
+                    statementDiv.innerHTML = `
+                        <div style="margin-bottom: 5px;">${i + 1}. ${statement}</div>
+                        <div>
+                            <button class="true-false-btn true-btn" data-index="${i}" data-value="true">V</button>
+                            <button class="true-false-btn false-btn" data-index="${i}" data-value="false">F</button>
+                        </div>
+                    `;
+                    statementsContainer.appendChild(statementDiv);
+                });
+                
+                contentContainer.appendChild(statementsContainer);
+                
+                // Configurar eventos para os botões V/F
+                setTimeout(() => {
+                    document.querySelectorAll('#exam-content .true-false-btn').forEach(btn => {
+                        btn.onclick = function() {
+                            const index = parseInt(this.getAttribute('data-index'));
+                            const value = this.getAttribute('data-value') === 'true';
+                            
+                            // Salvar resposta
+                            if (!gameState.examAnswers[index]) {
+                                gameState.examAnswers[index] = [];
+                            }
+                            gameState.examAnswers[index][index] = value;
+                            
+                            // Destacar botão selecionado
+                            const parent = this.parentElement;
+                            parent.querySelectorAll('.true-false-btn').forEach(b => {
+                                b.style.opacity = '0.7';
+                            });
+                            this.style.opacity = '1';
+                        };
+                    });
+                    
+                    // Restaurar respostas salvas, se houver
+                    if (savedAnswer) {
+                        savedAnswer.forEach((answer, i) => {
+                            if (answer !== null) {
+                                const btn = document.querySelector(`#exam-content .true-false-btn[data-index="${i}"][data-value="${answer}"]`);
+                                if (btn) {
+                                    btn.style.opacity = '1';
+                                }
+                            }
+                        });
+                    }
+                }, 0);
+            } else if (question.type === 'text') {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'input-answer';
+                input.placeholder = 'Digite sua resposta aqui...';
+                if (savedAnswer) {
+                    input.value = savedAnswer;
+                }
+                input.oninput = () => {
+                    gameState.examAnswers[index] = input.value;
+                };
+                contentContainer.appendChild(input);
+            }
+        }
+
+        // Próxima pergunta na prova
+        function nextExamQuestion() {
+            if (gameState.currentQuestion < 15) {
+                loadExamQuestion(gameState.currentQuestion + 1);
+            }
+        }
+
+        // Pergunta anterior na prova
+        function previousExamQuestion() {
+            if (gameState.currentQuestion > 0) {
+                loadExamQuestion(gameState.currentQuestion - 1);
+            }
+        }
+
+        // Finalizar prova
+        function finishExam() {
+            clearInterval(gameState.timerInterval);
+            
+            // Calcular pontuação
+            let correctCount = 0;
+            let totalCount = 0;
+            
+            // Para simplificar, vamos considerar que todas as questões valem 1 ponto
+            // Em uma implementação real, você calcularia com base nas respostas corretas
+            correctCount = Math.floor(Math.random() * 11) + 5; // Simulação: entre 5 e 15 acertos
+            totalCount = 16;
+            
+            gameState.score = correctCount;
+            
+            // Atualizar estatísticas
+            playerStats.totalQuestions += totalCount;
+            playerStats.correctAnswers += correctCount;
+            
+            const scorePercentage = Math.floor((correctCount / totalCount) * 100);
+            if (scorePercentage > playerStats.bestScore) {
+                playerStats.bestScore = scorePercentage;
+            }
+            
+            saveStats();
+            
+            showResults('exam');
+        }
+
+        // Iniciar jogo de flashcards
+        function startFlashcardsGame() {
+            document.getElementById('flashcards-game-screen').style.display = 'block';
+            gameState.currentScreen = "flashcards";
+            
+            loadFlashcard(0);
+        }
+
+        // Carregar flashcard
+        function loadFlashcard(index) {
+            gameState.currentFlashcard = index;
+            
+            document.getElementById('flashcard-count').textContent = `${index + 1}/${gameData.flashcards.length}`;
+            document.getElementById('flashcard-score').textContent = gameState.flashcardsCorrect;
+            
+            const flashcard = gameData.flashcards[index];
+            document.getElementById('flashcard-question').textContent = flashcard.question;
+            document.getElementById('flashcard-answer-text').textContent = flashcard.answer;
+            
+            // Esconder resposta e opções
+            document.getElementById('flashcard-options').style.display = 'none';
+            document.getElementById('flashcard-answer').style.display = 'none';
+            
+            // Mostrar botão "Mostrar Resposta"
+            document.getElementById('flashcard-show-btn').style.display = 'block';
+            document.getElementById('flashcard-next-btn').style.display = 'none';
+        }
+
+        // Mostrar resposta do flashcard
+        function showFlashcardAnswer() {
+            document.getElementById('flashcard-answer').style.display = 'block';
+            document.getElementById('flashcard-show-btn').style.display = 'none';
+            document.getElementById('flashcard-next-btn').style.display = 'block';
+            
+            // Criar opções de "Acertou?" e "Errou?"
+            const optionsContainer = document.getElementById('flashcard-options');
+            optionsContainer.innerHTML = '';
+            optionsContainer.style.display = 'flex';
+            optionsContainer.style.justifyContent = 'center';
+            optionsContainer.style.gap = '20px';
+            optionsContainer.style.marginTop = '20px';
+            
+            const correctBtn = document.createElement('button');
+            correctBtn.className = 'true-false-btn true-btn';
+            correctBtn.textContent = 'Acertou';
+            correctBtn.onclick = () => {
+                gameState.flashcardsCorrect++;
+                nextFlashcard();
+            };
+            
+            const wrongBtn = document.createElement('button');
+            wrongBtn.className = 'true-false-btn false-btn';
+            wrongBtn.textContent = 'Errou';
+            wrongBtn.onclick = () => {
+                nextFlashcard();
+            };
+            
+            optionsContainer.appendChild(correctBtn);
+            optionsContainer.appendChild(wrongBtn);
+        }
+
+        // Próximo flashcard
+        function nextFlashcard() {
+            if (gameState.currentFlashcard < gameData.flashcards.length - 1) {
+                loadFlashcard(gameState.currentFlashcard + 1);
+            } else {
+                // Fim dos flashcards
+                gameState.score = gameState.flashcardsCorrect;
+                
+                // Atualizar estatísticas
+                playerStats.totalQuestions += gameData.flashcards.length;
+                playerStats.correctAnswers += gameState.flashcardsCorrect;
+                
+                saveStats();
+                
+                showResults('flashcards');
+            }
+        }
+
+        // Mostrar opções de estudo
+        function showStudyOptions() {
+            document.getElementById('study-modal').style.display = 'flex';
+        }
+
+        // Esconder modal de estudo
+        function hideStudyModal() {
+            document.getElementById('study-modal').style.display = 'none';
+        }
+
+        // Iniciar modo estudo
+        function startStudy(chapter) {
+            gameState.studyChapter = chapter;
+            hideStudyModal();
+            
+            document.getElementById('study-screen').style.display = 'block';
+            gameState.currentScreen = "study";
+            
+            // Atualizar capítulo no cabeçalho
+            let chapterText = '';
+            if (chapter === 11) chapterText = '11: Escravidão e Resistência';
+            else if (chapter === 12) chapterText = '12: Sociedade Açucareira';
+            else chapterText = '11 e 12: Ambos os Capítulos';
+            
+            document.getElementById('study-chapter').textContent = chapterText;
+            
+            // Carregar conteúdo de estudo
+            const contentContainer = document.getElementById('study-content');
+            contentContainer.innerHTML = '';
+            
+            let contentToShow = [];
+            
+            if (chapter === 11) {
+                contentToShow = gameData.studyContent.chapter11;
+            } else if (chapter === 12) {
+                contentToShow = gameData.studyContent.chapter12;
+            } else {
+                contentToShow = [...gameData.studyContent.chapter11, ...gameData.studyContent.chapter12];
+            }
+            
+            contentToShow.forEach(section => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'study-section';
+                sectionDiv.innerHTML = `
+                    <h3>${section.title}</h3>
+                    ${section.content}
+                `;
+                contentContainer.appendChild(sectionDiv);
+            });
+        }
+
+        // Mostrar resultados
+        function showResults(gameType) {
+            hideAllScreens();
+            document.getElementById('results-screen').style.display = 'block';
+            gameState.currentScreen = "results";
+            
+            let title = '';
+            let totalQuestions = 0;
+            
+            switch(gameType) {
+                case 'time':
+                    title = 'Competição de Tempo - Resultados';
+                    totalQuestions = 20;
+                    break;
+                case 'exam':
+                    title = 'Simulação de Prova - Resultados';
+                    totalQuestions = 16;
+                    break;
+                case 'flashcards':
+                    title = 'Flashcards - Resultados';
+                    totalQuestions = gameData.flashcards.length;
+                    break;
+            }
+            
+            document.getElementById('results-title').textContent = title;
+            document.getElementById('results-total').textContent = totalQuestions;
+            document.getElementById('results-correct').textContent = gameState.score;
+            document.getElementById('results-wrong').textContent = totalQuestions - gameState.score;
+            
+            // Para o modo tempo, mostrar o tempo usado
+            if (gameType === 'time') {
+                const timeUsed = 120 - gameState.timeLeft;
+                document.getElementById('results-time').textContent = formatTime(timeUsed);
+            } else {
+                document.getElementById('results-time').textContent = '--:--';
+            }
+            
+            // Calcular e mostrar pontuação percentual
+            const percentage = Math.floor((gameState.score / totalQuestions) * 100);
+            document.getElementById('final-score').textContent = `${percentage}%`;
+            
+            // Atualizar barra de progresso
+            const progressFill = document.createElement('div');
+            progressFill.className = 'progress-fill';
+            progressFill.style.width = `${percentage}%`;
+            
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            progressBar.appendChild(progressFill);
+            
+            document.querySelector('.results-details').appendChild(progressBar);
+        }
+
+        // Reiniciar jogo
+        function restartGame() {
+            startGame(gameState.currentGame);
+        }
+
+        // Modal de confirmação
+        function showConfirmModal(title, message, callback) {
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-message').textContent = message;
+            window.confirmCallback = callback;
+            document.getElementById('confirm-modal').style.display = 'flex';
+        }
+
+        function hideConfirmModal() {
+            document.getElementById('confirm-modal').style.display = 'none';
+        }
+
+        function confirmAction() {
+            if (window.confirmCallback) {
+                window.confirmCallback();
+            }
+            hideConfirmModal();
+        }
+
+        // Inicializar o jogo
+        window.onload = function() {
+            loadStats();
+            showMenu();
+        };
+    </script>
+</body>
+</html>
