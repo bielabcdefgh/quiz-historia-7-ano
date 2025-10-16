@@ -484,6 +484,51 @@
             color: var(--accent);
         }
         
+        .review-container {
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .review-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            text-align: center;
+        }
+        
+        .review-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .review-question {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .review-answer {
+            margin-bottom: 10px;
+        }
+        
+        .review-explanation {
+            font-style: italic;
+            color: var(--accent);
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        
+        .correct-review {
+            border-left: 5px solid var(--correct);
+        }
+        
+        .wrong-review {
+            border-left: 5px solid var(--wrong);
+        }
+        
         .progress-bar {
             width: 100%;
             height: 20px;
@@ -683,11 +728,11 @@
                     <div class="game-info">
                         <div class="info-item">
                             <span>Tempo:</span>
-                            <span class="timer" id="time-timer">02:00</span>
+                            <span class="timer" id="time-timer">40s</span>
                         </div>
                         <div class="info-item">
                             <span>Questão:</span>
-                            <span id="time-question-count">1/20</span>
+                            <span id="time-question-count">1/30</span>
                         </div>
                         <div class="info-item">
                             <span>Pontuação:</span>
@@ -819,6 +864,14 @@
                     </div>
                 </div>
                 
+                <!-- Revisão de Questões -->
+                <div class="review-container" id="review-container" style="display: none;">
+                    <h3 class="review-title">Revisão das Questões</h3>
+                    <div id="review-questions">
+                        <!-- As questões serão inseridas aqui via JavaScript -->
+                    </div>
+                </div>
+                
                 <div class="navigation">
                     <button class="nav-btn" onclick="showMenu()">Voltar ao Menu</button>
                     <button class="nav-btn" onclick="restartGame()">Jogar Novamente</button>
@@ -865,9 +918,9 @@
     </div>
 
     <script>
-        // Dados do jogo - VERSÃO COMPLETA SEM REPETIÇÕES
+        // Dados do jogo - VERSÃO COMPLETA COM CONTEÚDO CORRETO
         const gameData = {
-            // Questões do Capítulo 11 - 25 QUESTÕES ÚNICAS
+            // Questões do Capítulo 11 - ESCRAVIDÃO E RESISTÊNCIA
             chapter11: [
                 {
                     type: "multiple",
@@ -1135,7 +1188,7 @@
                 }
             ],
             
-            // Questões do Capítulo 12 - 25 QUESTÕES ÚNICAS
+            // Questões do Capítulo 12 - SOCIEDADE AÇUCAREIRA
             chapter12: [
                 {
                     type: "multiple",
@@ -1546,7 +1599,7 @@
                 ]
             },
             
-            // Flash cards EXPANDIDOS (40 flashcards)
+            // Flash cards
             flashcards: [
                 {
                     question: "Qual era a principal rota do tráfico transatlântico?",
@@ -1725,8 +1778,10 @@
             flashcardsCorrect: 0,
             studyChapter: 0,
             wrongFlashcards: [],
-            usedQuestions: new Set(), // Para controlar questões já usadas
-            usedFlashcards: new Set() // Para controlar flashcards já usados
+            usedQuestions: new Set(),
+            usedFlashcards: new Set(),
+            questionHistory: [], // Para armazenar histórico de questões respondidas
+            currentTimeLimit: 40 // Tempo inicial em segundos para modo tempo
         };
 
         // Estatísticas do jogador
@@ -1770,7 +1825,11 @@
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            if (mins > 0) {
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            } else {
+                return `${secs.toString().padStart(2, '0')}s`;
+            }
         }
 
         // Mudar tema
@@ -1795,6 +1854,7 @@
             // Limpar questões usadas
             gameState.usedQuestions.clear();
             gameState.usedFlashcards.clear();
+            gameState.questionHistory = [];
             
             // Atualizar estatísticas
             updateStatsDisplay();
@@ -1822,6 +1882,8 @@
             gameState.examAnswers = new Array(20).fill(null);
             gameState.currentFlashcard = 0;
             gameState.flashcardsCorrect = 0;
+            gameState.questionHistory = [];
+            gameState.currentTimeLimit = 40; // Resetar tempo inicial
             
             hideAllScreens();
             
@@ -1862,8 +1924,8 @@
             document.getElementById('time-game-screen').style.display = 'block';
             gameState.currentScreen = "time";
             
-            // Configurar tempo inicial (2 minutos)
-            gameState.timeLeft = 120;
+            // Configurar tempo inicial baseado na dificuldade
+            gameState.timeLeft = gameState.currentTimeLimit;
             updateTimeDisplay();
             
             // Iniciar temporizador
@@ -1872,7 +1934,7 @@
                 updateTimeDisplay();
                 
                 if (gameState.timeLeft <= 0) {
-                    endTimeGame();
+                    endTimeQuestion(false);
                 }
             }, 1000);
             
@@ -1888,13 +1950,41 @@
         // Carregar pergunta do modo tempo
         function loadTimeQuestion() {
             const questionIndex = gameState.currentQuestion;
-            const totalQuestions = 20;
+            const totalQuestions = 30;
             
             // Determinar capítulo (primeiro 11, depois 12)
-            const chapter = questionIndex < 10 ? 'chapter11' : 'chapter12';
+            const chapter = questionIndex < 15 ? 'chapter11' : 'chapter12';
             
-            // Selecionar pergunta única do capítulo
-            const question = getUniqueQuestion(chapter, gameState.usedQuestions);
+            // Determinar dificuldade baseada no número da questão
+            let difficulty;
+            if (questionIndex < 10) difficulty = "easy";
+            else if (questionIndex < 20) difficulty = "medium";
+            else difficulty = "hard";
+            
+            // Selecionar pergunta única do capítulo e dificuldade
+            const questions = gameData[chapter].filter(q => q.difficulty === difficulty);
+            const availableQuestions = questions.filter((q, idx) => 
+                !gameState.usedQuestions.has(`${chapter}-${gameData[chapter].indexOf(q)}`)
+            );
+            
+            let question;
+            if (availableQuestions.length > 0) {
+                question = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+                const originalIndex = gameData[chapter].indexOf(question);
+                gameState.usedQuestions.add(`${chapter}-${originalIndex}`);
+            } else {
+                // Se não houver questões disponíveis, pegar qualquer uma da dificuldade
+                question = questions[Math.floor(Math.random() * questions.length)];
+            }
+            
+            // Aumentar tempo limite conforme a dificuldade aumenta
+            if (questionIndex < 10) {
+                gameState.currentTimeLimit = 40; // 40 segundos para fáceis
+            } else if (questionIndex < 20) {
+                gameState.currentTimeLimit = 120; // 2 minutos para médias
+            } else {
+                gameState.currentTimeLimit = 300; // 5 minutos para difíceis
+            }
             
             document.getElementById('time-question-count').textContent = `${questionIndex + 1}/${totalQuestions}`;
             document.getElementById('time-question').textContent = question.question;
@@ -1911,7 +2001,7 @@
                     const button = document.createElement('button');
                     button.className = 'option-btn';
                     button.textContent = option;
-                    button.onclick = () => checkTimeAnswer(index, question.correct);
+                    button.onclick = () => checkTimeAnswer(index, question.correct, question);
                     optionsContainer.appendChild(button);
                 });
             } else if (question.type === 'truefalse') {
@@ -1922,13 +2012,13 @@
                 const trueBtn = document.createElement('button');
                 trueBtn.className = 'option-btn';
                 trueBtn.textContent = 'Verdadeiro';
-                trueBtn.onclick = () => checkTimeAnswer(true, question.answers[0]);
+                trueBtn.onclick = () => checkTimeAnswer(true, question.answers[0], question);
                 optionsContainer.appendChild(trueBtn);
                 
                 const falseBtn = document.createElement('button');
                 falseBtn.className = 'option-btn';
                 falseBtn.textContent = 'Falso';
-                falseBtn.onclick = () => checkTimeAnswer(false, question.answers[0]);
+                falseBtn.onclick = () => checkTimeAnswer(false, question.answers[0], question);
                 optionsContainer.appendChild(falseBtn);
             } else if (question.type === 'text' || question.type === 'explain') {
                 const input = document.createElement('input');
@@ -1942,14 +2032,29 @@
                 submitBtn.textContent = 'Enviar Resposta';
                 submitBtn.onclick = () => {
                     const userAnswer = input.value.toLowerCase().trim();
-                    checkTimeAnswer(userAnswer, question.answer, question.keywords);
+                    checkTimeAnswer(userAnswer, question.answer, question, question.keywords);
                 };
                 optionsContainer.appendChild(submitBtn);
             }
+            
+            // Reiniciar temporizador com novo tempo
+            clearInterval(gameState.timerInterval);
+            gameState.timeLeft = gameState.currentTimeLimit;
+            updateTimeDisplay();
+            gameState.timerInterval = setInterval(() => {
+                gameState.timeLeft--;
+                updateTimeDisplay();
+                
+                if (gameState.timeLeft <= 0) {
+                    endTimeQuestion(false, question);
+                }
+            }, 1000);
         }
 
         // Verificar resposta no modo tempo
-        function checkTimeAnswer(userAnswer, correctAnswer, keywords = []) {
+        function checkTimeAnswer(userAnswer, correctAnswer, question, keywords = []) {
+            clearInterval(gameState.timerInterval);
+            
             const options = document.querySelectorAll('#time-options .option-btn, #time-options .submit-btn');
             options.forEach(opt => opt.disabled = true);
             
@@ -1964,13 +2069,19 @@
                 isCorrect = checkTextAnswer(userAnswer, correctAnswer, keywords);
             }
             
+            // Salvar no histórico
+            gameState.questionHistory.push({
+                question: question.question,
+                userAnswer: userAnswer,
+                correctAnswer: correctAnswer,
+                isCorrect: isCorrect,
+                explanation: question.explanation,
+                type: question.type
+            });
+            
             if (isCorrect) {
                 gameState.score += 10;
                 document.getElementById('time-score').textContent = gameState.score;
-                
-                // Adicionar tempo por acerto
-                gameState.timeLeft += 10;
-                updateTimeDisplay();
                 
                 // Atualizar estatísticas
                 playerStats.correctAnswers++;
@@ -1978,6 +2089,30 @@
             } else {
                 playerStats.totalQuestions++;
             }
+            
+            // Mostrar botão "Próxima"
+            document.getElementById('time-next-btn').style.display = 'block';
+            
+            saveStats();
+        }
+
+        // Finalizar questão por tempo
+        function endTimeQuestion(isCorrect, question) {
+            clearInterval(gameState.timerInterval);
+            
+            if (question) {
+                // Salvar no histórico como errada
+                gameState.questionHistory.push({
+                    question: question.question,
+                    userAnswer: "Tempo esgotado",
+                    correctAnswer: question.type === 'multiple' ? question.options[question.correct] : question.answer,
+                    isCorrect: false,
+                    explanation: question.explanation,
+                    type: question.type
+                });
+            }
+            
+            playerStats.totalQuestions++;
             
             // Mostrar botão "Próxima"
             document.getElementById('time-next-btn').style.display = 'block';
@@ -2023,7 +2158,7 @@
         function nextTimeQuestion() {
             gameState.currentQuestion++;
             
-            if (gameState.currentQuestion >= 20) {
+            if (gameState.currentQuestion >= 30) {
                 endTimeGame();
             } else {
                 loadTimeQuestion();
@@ -2034,21 +2169,13 @@
         function endTimeGame() {
             clearInterval(gameState.timerInterval);
             
-            // Atualizar melhor tempo, se aplicável
-            if (gameState.score > 0) {
-                const timeUsed = 120 - gameState.timeLeft;
-                if (playerStats.bestTime === 0 || timeUsed < playerStats.bestTime) {
-                    playerStats.bestTime = timeUsed;
-                }
-                
-                // Atualizar melhor pontuação
-                const scorePercentage = Math.min(100, Math.floor((gameState.score / 200) * 100));
-                if (scorePercentage > playerStats.bestScore) {
-                    playerStats.bestScore = scorePercentage;
-                }
-                
-                saveStats();
+            // Atualizar melhor pontuação
+            const scorePercentage = Math.min(100, Math.floor((gameState.score / 300) * 100));
+            if (scorePercentage > playerStats.bestScore) {
+                playerStats.bestScore = scorePercentage;
             }
+            
+            saveStats();
             
             showResults('time');
         }
@@ -2277,16 +2404,29 @@
         function finishExam() {
             clearInterval(gameState.timerInterval);
             
-            // Calcular pontuação
+            // Calcular pontuação e preparar histórico
             let correctCount = 0;
+            gameState.questionHistory = [];
             
             for (let i = 0; i < gameState.examAnswers.length; i++) {
                 if (gameState.examAnswers[i] !== null) {
                     // Em uma implementação real, você verificaria cada resposta
                     // Aqui vamos simular uma correção
-                    if (Math.random() > 0.3) { // 70% de chance de acerto para respostas preenchidas
+                    const isCorrect = Math.random() > 0.3; // 70% de chance de acerto para respostas preenchidas
+                    
+                    if (isCorrect) {
                         correctCount++;
                     }
+                    
+                    // Adicionar ao histórico (simulado)
+                    gameState.questionHistory.push({
+                        question: `Questão ${i+1} (simulada)`,
+                        userAnswer: "Resposta do usuário",
+                        correctAnswer: "Resposta correta",
+                        isCorrect: isCorrect,
+                        explanation: "Explicação da questão",
+                        type: "multiple"
+                    });
                 }
             }
             
@@ -2492,7 +2632,7 @@
             switch(gameType) {
                 case 'time':
                     title = 'Competição de Tempo - Resultados';
-                    totalQuestions = 20;
+                    totalQuestions = 30;
                     break;
                 case 'exam':
                     title = 'Simulação de Prova - Resultados';
@@ -2511,8 +2651,7 @@
             
             // Para o modo tempo, mostrar o tempo usado
             if (gameType === 'time') {
-                const timeUsed = 120 - gameState.timeLeft;
-                document.getElementById('results-time').textContent = formatTime(timeUsed);
+                document.getElementById('results-time').textContent = '--:--';
             } else {
                 document.getElementById('results-time').textContent = '--:--';
             }
@@ -2530,6 +2669,52 @@
                 progressFill.style.width = `${percentage}%`;
                 progressBar.appendChild(progressFill);
             }
+            
+            // Mostrar revisão de questões se houver histórico
+            if (gameState.questionHistory.length > 0) {
+                showQuestionReview();
+            }
+        }
+
+        // Mostrar revisão de questões
+        function showQuestionReview() {
+            const reviewContainer = document.getElementById('review-container');
+            const reviewQuestions = document.getElementById('review-questions');
+            
+            reviewContainer.style.display = 'block';
+            reviewQuestions.innerHTML = '';
+            
+            gameState.questionHistory.forEach((item, index) => {
+                const reviewItem = document.createElement('div');
+                reviewItem.className = `review-item ${item.isCorrect ? 'correct-review' : 'wrong-review'}`;
+                
+                let userAnswerText = '';
+                if (item.type === 'multiple') {
+                    userAnswerText = typeof item.userAnswer === 'number' ? 
+                        `Sua resposta: ${item.userAnswer + 1}` : 
+                        `Sua resposta: ${item.userAnswer}`;
+                } else {
+                    userAnswerText = `Sua resposta: ${item.userAnswer}`;
+                }
+                
+                let correctAnswerText = '';
+                if (item.type === 'multiple') {
+                    correctAnswerText = typeof item.correctAnswer === 'number' ? 
+                        `Resposta correta: ${item.correctAnswer + 1}` : 
+                        `Resposta correta: ${item.correctAnswer}`;
+                } else {
+                    correctAnswerText = `Resposta correta: ${item.correctAnswer}`;
+                }
+                
+                reviewItem.innerHTML = `
+                    <div class="review-question">${index + 1}. ${item.question}</div>
+                    <div class="review-answer ${item.isCorrect ? 'correct' : 'wrong'}">${userAnswerText}</div>
+                    ${!item.isCorrect ? `<div class="review-answer correct">${correctAnswerText}</div>` : ''}
+                    <div class="review-explanation">${item.explanation}</div>
+                `;
+                
+                reviewQuestions.appendChild(reviewItem);
+            });
         }
 
         // Reiniciar jogo
